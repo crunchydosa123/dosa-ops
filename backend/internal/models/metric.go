@@ -1,9 +1,8 @@
-package collector
+package models
 
 import "time"
 
 type Metric struct {
-	ID        int
 	Service   string
 	Name      string
 	Value     float64
