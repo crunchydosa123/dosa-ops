@@ -12,11 +12,19 @@ func main() {
 
 	database := db.Connect()
 
-	router := gin.Default()
+	r := gin.Default()
 
-	api.RegisterRoutes(router, database)
+	r.Use(api.AuthMiddleware())
+
+	r.POST("/login", api.Login(database))
+	r.POST("/signup", api.Signup())
+
+	apigroup := r.Group("/api")
+	apigroup.Use(api.AuthMiddleware())
+
+	api.RegisterRoutes(r, database)
 
 	log.Println("API running on :8080")
 
-	router.Run(":8080")
+	r.Run(":8080")
 }

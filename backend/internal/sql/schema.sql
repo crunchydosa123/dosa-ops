@@ -4,6 +4,7 @@ CREATE TABLE services (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     url TEXT NOT NULL,
+    api_key TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -18,6 +19,12 @@ CREATE TABLE metrics (
     metric_type_id INT REFERENCES metric_types(id),
     value DOUBLE PRECISION,
     timestamp TIMESTAMP NOT NULL
+);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE,
+    password_hash TEXT
 );
 
 CREATE INDEX idx_metrics_service_metric_time
