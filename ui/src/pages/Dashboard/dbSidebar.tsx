@@ -1,11 +1,8 @@
-import React from 'react'
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenuButton } from '../../components/ui/sidebar'
 
-type Props = {}
-
-const DbSidebar = (props: Props) => {
+const DbSidebar = () => {
   return (
-    <Sidebar>
+    <Sidebar className=''>
       <SidebarHeader>
         Dosa-Ops
       </SidebarHeader>
