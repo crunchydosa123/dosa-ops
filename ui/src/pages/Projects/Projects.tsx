@@ -1,10 +1,11 @@
-import React from 'react'
+import Layout from "../Layout"
+import ProjectsMain from "./ProjectsMain"
 
-type Props = {}
-
-const Projects = (props: Props) => {
+const Projects = () => {
   return (
-    <div>Projects</div>
+    <Layout>
+      <ProjectsMain />
+      </Layout>
   )
 }
 

@@ -1,19 +1,12 @@
-import { SidebarProvider } from "../../components/ui/sidebar"
-import DbMain from "./dbMain"
-import DbSidebar from "./dbSidebar"
+import Layout from "../Layout";
+import DbMain from "./dbMain";
 
 const Dashboard = () => {
   return (
-    <div className="h-screen w-screen bg-yellow-200 flex flex-grow">
-      <div className="width-1/5">
-        <SidebarProvider>
-        <DbSidebar />
-      </SidebarProvider>
-      </div>
-      
+    <Layout>
       <DbMain />
-    </div>
-  )
-}
+    </Layout>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
