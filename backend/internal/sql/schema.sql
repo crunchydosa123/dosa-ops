@@ -1,5 +1,7 @@
 CREATE DATABASE dosa_ops;
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE services (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
@@ -21,11 +23,17 @@ CREATE TABLE metrics (
     timestamp TIMESTAMP NOT NULL
 );
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    email TEXT UNIQUE,
-    password_hash TEXT
+
+CREATE TABLE IF NOT EXISTS users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now()
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
 CREATE INDEX idx_metrics_service_metric_time
 ON metrics(service_id, metric_type_id, timestamp DESC);
