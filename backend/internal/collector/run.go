@@ -1,13 +1,13 @@
 package collector
 
 import (
-	"database/sql"
 	"log"
 
 	"github.com/crunchydosa123/dosa-ops/internal/repository"
+	"github.com/jackc/pgx/v5"
 )
 
-func Run(db *sql.DB) error {
+func Run(db *pgx.Conn) error {
 
 	services, err := repository.GetServices(db)
 	if err != nil {

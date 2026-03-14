@@ -1,20 +1,24 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"log"
 
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5"
 )
 
-func Connect() *sql.DB {
+var conn *pgx.Conn
 
-	connStr := "host=localhost port=5432 user=admin password=admin dbname=metrics sslmode=disable"
+func Connect() *pgx.Conn {
 
-	db, err := sql.Open("postgres", connStr)
+	conn, err := pgx.Connect(
+		context.Background(),
+		"postgresql://neondb_owner:npg_VJXaA6P2oOCe@ep-old-king-adwoxomx-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require",
+	)
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("DB connection failed:", err)
 	}
 
-	return db
+	return conn
 }

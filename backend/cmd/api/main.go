@@ -14,13 +14,11 @@ func main() {
 
 	r := gin.Default()
 
-	r.Use(api.AuthMiddleware())
-
 	r.POST("/login", api.Login(database))
-	r.POST("/signup", api.Signup())
+	r.POST("/signup", api.Signup(database))
 
-	apigroup := r.Group("/api")
-	apigroup.Use(api.AuthMiddleware())
+	//apigroup := r.Group("/api")
+	//apigroup.Use(api.AuthMiddleware())
 
 	api.RegisterRoutes(r, database)
 

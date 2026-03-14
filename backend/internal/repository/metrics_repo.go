@@ -1,15 +1,17 @@
 package repository
 
 import (
-	"database/sql"
+	"context"
 	"time"
 
 	"github.com/crunchydosa123/dosa-ops/internal/models"
+	"github.com/jackc/pgx/v5"
 )
 
-func InsertMetric(db *sql.DB, service string, name string, value float64) error {
+func InsertMetric(db *pgx.Conn, service string, name string, value float64) error {
 
 	_, err := db.Exec(
+		context.Background(),
 		`INSERT INTO metrics(service, name, value, timestamp)
 		 VALUES($1,$2,$3,$4)`,
 		service, name, value, time.Now(),
@@ -18,8 +20,9 @@ func InsertMetric(db *sql.DB, service string, name string, value float64) error 
 	return err
 }
 
-func GetMetrics(db *sql.DB, service string, metric string) ([]models.MetricPoint, error) {
+func GetMetrics(db *pgx.Conn, service string, metric string) ([]models.MetricPoint, error) {
 	rows, err := db.Query(
+		context.Background(),
 		`SELECT timestamp, value
 		FROM metrics
 		WHERE service=$1 AND name=$2

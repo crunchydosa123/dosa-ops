@@ -1,15 +1,18 @@
 package repository
 
 import (
-	"database/sql"
+	"context"
+
+	"github.com/jackc/pgx/v5"
 )
 
-func GetHashedPasswordByEmail(db *sql.DB, email string) (string, error) {
+func GetHashedPasswordByEmail(db *pgx.Conn, email string) (string, error) {
 
 	var password string
 
 	err := db.QueryRow(
-		`SELECT password FROM users WHERE id = $1`,
+		context.Background(),
+		`SELECT password FROM users WHERE email = $1`,
 		email,
 	).Scan(&password)
 

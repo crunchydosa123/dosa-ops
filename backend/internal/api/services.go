@@ -1,14 +1,14 @@
 package api
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/crunchydosa123/dosa-ops/internal/repository"
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5"
 )
 
-func GetServices(db *sql.DB) gin.HandlerFunc {
+func GetServices(db *pgx.Conn) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		services, err := repository.GetServices(db)
 		if err != nil {

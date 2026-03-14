@@ -1,4 +1,4 @@
-CREATE DATABASE metrics;
+CREATE DATABASE dosa_ops;
 
 CREATE TABLE services (
     id SERIAL PRIMARY KEY,

@@ -1,14 +1,15 @@
 package repository
 
 import (
-	"database/sql"
+	"context"
 
 	"github.com/crunchydosa123/dosa-ops/internal/models"
+	"github.com/jackc/pgx/v5"
 )
 
-func GetServices(db *sql.DB) ([]models.Service, error) {
+func GetServices(db *pgx.Conn) ([]models.Service, error) {
 
-	rows, err := db.Query("SELECT id, name, url FROM services")
+	rows, err := db.Query(context.Background(), "SELECT id, name, url FROM services")
 	if err != nil {
 		return nil, err
 	}
