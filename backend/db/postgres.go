@@ -3,17 +3,22 @@ package db
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/jackc/pgx/v5"
 )
 
-var conn *pgx.Conn
-
 func Connect() *pgx.Conn {
+
+	databaseURL := os.Getenv("DATABASE_URL")
+
+	if databaseURL == "" {
+		log.Fatal("DATABASE_URL not set")
+	}
 
 	conn, err := pgx.Connect(
 		context.Background(),
-		"postgresql://neondb_owner:npg_VJXaA6P2oOCe@ep-old-king-adwoxomx-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require",
+		databaseURL,
 	)
 
 	if err != nil {
