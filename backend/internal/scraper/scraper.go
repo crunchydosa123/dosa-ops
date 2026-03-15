@@ -7,6 +7,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/crunchydosa123/dosa-ops/internal/models"
+	"github.com/crunchydosa123/dosa-ops/internal/repository"
+	"github.com/jackc/pgx/v5"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -26,22 +29,26 @@ type MetricEvent struct {
 
 var ctx = context.Background()
 
-func StartScraper(rdb *redis.Client) {
+func StartScraper(db *pgx.Conn, rdb *redis.Client) {
 
 	ticker := time.NewTicker(10 * time.Second)
 
 	for {
 		<-ticker.C
 
-		services := getServices()
+		services, err := repository.GetServices(db)
 
+		if err != nil {
+			fmt.Println("error while getting services %s", err)
+			return
+		}
 		for _, s := range services {
 			scrapeService(s, rdb)
 		}
 	}
 }
 
-func scrapeService(service Service, rdb *redis.Client) {
+func scrapeService(service models.Service, rdb *redis.Client) {
 
 	url := fmt.Sprintf("%s/metrics", service.URL)
 
@@ -72,16 +79,5 @@ func scrapeService(service Service, rdb *redis.Client) {
 		data, _ := json.Marshal(event)
 
 		rdb.Publish(ctx, "metrics", data)
-	}
-}
-
-func getServices() []Service {
-
-	return []Service{
-		{
-			ID:   1,
-			Name: "posts-service",
-			URL:  "http://localhost:8081",
-		},
 	}
 }
